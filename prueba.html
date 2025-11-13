@@ -1,31 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/mind-ar@1.2.5/dist/mindar-image.prod.js"></script>
-    <script src="https://unpkg.com/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artest</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MindAR Demo con Botones A y B</title>
+
+    <!-- AFRAME + MINDAR -->
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* === OVERLAY DE ESCANEO === */
+        .example-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #example-scanning-overlay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: transparent;
+            z-index: 2;
+        }
+
+        @media (min-aspect-ratio: 1/1) {
+            #example-scanning-overlay .inner {
+                width: 50vh;
+                height: 50vh;
+            }
+        }
+
+        @media (max-aspect-ratio: 1/1) {
+            #example-scanning-overlay .inner {
+                width: 80vw;
+                height: 80vw;
+            }
+        }
+
+        #example-scanning-overlay.hidden {
+            display: none;
+        }
+
+        #example-scanning-overlay .inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+
+            background:
+                linear-gradient(to right, white 10px, transparent 10px) 0 0,
+                linear-gradient(to right, white 10px, transparent 10px) 0 100%,
+                linear-gradient(to left, white 10px, transparent 10px) 100% 0,
+                linear-gradient(to left, white 10px, transparent 10px) 100% 100%,
+                linear-gradient(to bottom, white 10px, transparent 10px) 0 0,
+                linear-gradient(to bottom, white 10px, transparent 10px) 100% 0,
+                linear-gradient(to top, white 10px, transparent 10px) 0 100%,
+                linear-gradient(to top, white 10px, transparent 10px) 100% 100%;
+            background-repeat: no-repeat;
+            background-size: 40px 40px;
+        }
+
+        #example-scanning-overlay img {
+            opacity: 0.7;
+            width: 90%;
+        }
+
+        .scanline {
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            background: white;
+            animation: move 2s linear infinite;
+        }
+
+        @keyframes move {
+
+            0%,
+            100% {
+                top: 0%;
+            }
+
+            50% {
+                top: calc(100% - 8px);
+            }
+        }
+
+        /* === BOTONES HUD === */
+        .hud {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 5;
+            display: flex;
+            gap: 10px;
+        }
+
+        .hud button {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .hud button:hover {
+            background-color: rgba(200, 200, 200, 0.9);
+        }
+
+        #toggleAB {
+            padding: 8px;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        #toggleAB img {
+            pointer-events: none;
+        }
+    </style>
 </head>
 
 <body>
-    <a-scene mindar-image="imageTargetSrc: https://contenidosdigitaleseducar2024-oss.github.io/pagina-ar/targets.mind" 
-    vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-    <a-camera position="0 0 0" look-controls="false"></a-camera>
-    
-        <a-assets>
-            <a-asset-item id="modelo"
-                src="https://raw.githubusercontent.com/ArtestDev/Artest_web.github.io/main/Artest_models/Artest.glb"></a-asset-item>
-        </a-assets>
+    <div class="example-container">
+        <!-- Overlay de escaneo personalizado -->
+        <div id="example-scanning-overlay">
+            <div class="inner">
+                <img src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/biolev.png" />
+                <div class="scanline"></div>
+            </div>
+        </div>
+
+        <!-- HUD con botones -->
+        <div class="hud">
+            <button id="toggleAB">
+                <img src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/infoBT.png"
+                    style="width:24px; height:24px;">
+            </button>
+
+            <button id="btnA">A</button>
+            <button id="btnB">B</button>
+        </div>
+
+        <!-- ESCENA -->
+        <a-scene
+            mindar-image="imageTargetSrc: https://raw.githubusercontent.com/ArtestDev/biolev/main/targets.mind; showStats: false; uiScanning: #example-scanning-overlay;"
+            embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights"
+            vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+            <a-assets>
+                <!-- target e imágenes -->
+                <img id="card" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/biolev.png" />
+                <img id="imgA" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/biolev.png" />
+                <img id="imgB" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/biolev.png" />
+                <a-asset-item id="muffinModel"
+                    src="https://raw.githubusercontent.com/ArtestDev/biolev/main/modelos/Muffin_02.glb"></a-asset-item>
+            </a-assets>
+
+            <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
+                raycaster="far: 10000; objects: .clickable"></a-camera>
+
+            <!-- Target principal -->
+            <a-entity id="mytarget" mindar-image-target="targetIndex: 0">
+                <!-- imagen base   -->
+                <a-plane src="#card" position="0 0 1" height="0.55" width="1" rotation="90 0 0"></a-plane>
+                <!-- texro   -->
+                <a-text value="Muffin" color="black" align="center" width="2" position="0 -0.4 0"></a-text>
+
+                <!-- modelo 3D -->
+                <a-gltf-model id="avatar" src="#muffinModel" scale="0.05 0.05 0.05" position="0 0 0"
+                    rotation="90 0 0"></a-gltf-model>
+
+                <!-- imágenes pequeñas que se mostrarán con los botones -->
+                <a-image id="smallA" src="#imgA" position="-0.35 0.3 0.05" width="0.3" height="0.2"
+                    visible="false"></a-image>
+                <a-image id="smallB" src="#imgB" position="0.35 0.3 0.05" width="0.3" height="0.2"
+                    visible="false"></a-image>
+            </a-entity>
+        </a-scene>
+    </div>
+
+    <script>
+        const btnA = document.querySelector("#btnA");
+        const btnB = document.querySelector("#btnB");
+        const imgA = document.querySelector("#smallA");
+        const imgB = document.querySelector("#smallB");
+
+        btnA.addEventListener("click", () => {
+            const visible = imgA.getAttribute("visible");
+            imgA.setAttribute("visible", !visible);
+        });
+
+        btnB.addEventListener("click", () => {
+            const visible = imgB.getAttribute("visible");
+            imgB.setAttribute("visible", !visible);
+        });
 
         
+        const toggleAB = document.querySelector("#toggleAB");
 
-        <a-entity mindar-image-target="targetIndex: 0">
-            <a-gltf-model src="#modelo" scale="10 10 10" position="0 0 0" rotation="0 0 0 "></a-gltf-model>
-        </a-entity>
-    </a-scene>
+        toggleAB.addEventListener("click", () => {
+            const isVisible = btnA.style.display !== "none";
+
+            if (isVisible) {
+                btnA.style.display = "none";
+                btnB.style.display = "none";
+            } else {
+                btnA.style.display = "block";
+                btnB.style.display = "block";
+            }
+        });
+
+    </script>
 </body>
 
 </html>
