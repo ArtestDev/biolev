@@ -149,26 +149,17 @@
             </div>
         </div>
 
-        <!-- HUD con botones -->
-        <div class="hud">
-            <button id="toggleAB">
-                <img src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/infoBT.png"
-                    style="width:24px; height:24px;">
-            </button>
-
-            <button id="btnA">A</button>
-            <button id="btnB">B</button>
-        </div>
+        
 
         <!-- ESCENA -->
         <a-scene
-            mindar-image="imageTargetSrc: https://raw.githubusercontent.com/ArtestDev/biolev/main/targets.mind; showStats: false; uiScanning: #example-scanning-overlay;"
+            mindar-image="imageTargetSrc: https://raw.githubusercontent.com/ArtestDev/biolev/main/target_chikenbiolev.mind; showStats: false; uiScanning: #example-scanning-overlay;"
             embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights"
             vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
             <a-assets>
                 <!-- target e imágenes -->
-                <img id="card" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/biolev.png" />
-                <img id="imgA" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/biolev.png" />
+                <img id="card" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/Logo_Biolev_alpha.png" />
+                <img id="imgA" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/TEX_Muffin_Info.png" />
                 <img id="imgB" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/biolev.png" />
                 <a-asset-item id="muffinModel"
                     src="https://raw.githubusercontent.com/ArtestDev/biolev/main/modelos/Muffin_02.glb"></a-asset-item>
@@ -181,52 +172,36 @@
             <a-entity id="mytarget" mindar-image-target="targetIndex: 0">
                 <!-- imagen base   -->
                 <a-plane src="#card" position="0 0 1" height="0.55" width="1" rotation="90 0 0"></a-plane>
-                <!-- texro   -->
-                <a-text value="Muffin" color="black" align="center" width="2" position="0 -0.4 0"></a-text>
+                
 
                 <!-- modelo 3D -->
                 <a-gltf-model id="avatar" src="#muffinModel" scale="0.05 0.05 0.05" position="0 0 0"
                     rotation="90 0 0"></a-gltf-model>
 
                 <!-- imágenes pequeñas que se mostrarán con los botones -->
-                <a-image id="smallA" src="#imgA" position="-0.35 0.3 0.05" width="0.3" height="0.2"
+                <a-image id="smallA" src="#imgA" position="1 0.3 0.05" rotation="90 0 0" width="0.8" height="0.6"
                     visible="false"></a-image>
-                <a-image id="smallB" src="#imgB" position="0.35 0.3 0.05" width="0.3" height="0.2"
-                    visible="false"></a-image>
+                
+                <a-image id="profile-button" class="clickable" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/infoBT.png" visible="true"
+                    position="0.65 0 0" rotation="90 0 0" height="0.15" width="0.15"
+                    animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate">
+                </a-image>
+
             </a-entity>
         </a-scene>
     </div>
 
     <script>
-        const btnA = document.querySelector("#btnA");
-        const btnB = document.querySelector("#btnB");
+        const profileButton = document.querySelector("#profile-button");
         const imgA = document.querySelector("#smallA");
-        const imgB = document.querySelector("#smallB");
-
-        btnA.addEventListener("click", () => {
+        
+        profileButton.addEventListener("click", () => {
             const visible = imgA.getAttribute("visible");
             imgA.setAttribute("visible", !visible);
         });
 
-        btnB.addEventListener("click", () => {
-            const visible = imgB.getAttribute("visible");
-            imgB.setAttribute("visible", !visible);
-        });
 
         
-        const toggleAB = document.querySelector("#toggleAB");
-
-        toggleAB.addEventListener("click", () => {
-            const isVisible = btnA.style.display !== "none";
-
-            if (isVisible) {
-                btnA.style.display = "none";
-                btnB.style.display = "none";
-            } else {
-                btnA.style.display = "block";
-                btnB.style.display = "block";
-            }
-        });
 
     </script>
 </body>
