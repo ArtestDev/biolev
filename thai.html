@@ -145,7 +145,7 @@
         <!-- Overlay de escaneo personalizado -->
         <div id="example-scanning-overlay">
             <div class="inner">
-                <img src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/Marcador_Muffin.jpg" />
+                <img src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/Marcador_Pat_Thai.png" />
                 <div class="scanline"></div>
             </div>
         </div>
@@ -154,16 +154,16 @@
 
         <!-- ESCENA -->
         <a-scene
-            mindar-image="imageTargetSrc: https://raw.githubusercontent.com/ArtestDev/biolev/main/tarmuffin.mind; uiScanning: #example-scanning-overlay; warmupTolerance: 1; filterMinCF:0.0001; filterBeta: 0.1; missTolerance: 1;"
+            mindar-image="imageTargetSrc: https://raw.githubusercontent.com/ArtestDev/biolev/main/tarthai.mind; uiScanning: #example-scanning-overlay; warmupTolerance: 1; filterMinCF:0.0001; filterBeta: 0.1; missTolerance: 1;"
             embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights"
             vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
             <a-assets>
                 <!-- target e imágenes -->
                 <img id="card"
                     src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/Logo_Biolev_Blanco.png" />
-                <img id="base" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/Marcador_Muffin.jpg" />
-                <img id="imgA" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/TEX_Biolev_Info_2.png" />
-                
+                <img id="base" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/Marcador_Pat_Thai.png" />
+                <img id="imgA" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/TEX_Biolev_Info_Pat_thai.png" />
+                <img id="info" src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/infoBT.png" />
                 <a-asset-item id="muffinModel"
                     src="https://raw.githubusercontent.com/ArtestDev/biolev/main/modelos/phat_thai_AR_2.glb"></a-asset-item>
             </a-assets>
@@ -186,14 +186,14 @@
                 </a-image>
                 <!-- modelo 3D -->
                 <a-gltf-model id="avatar" src="#muffinModel" scale="0.60 0.60 0.60" position="0 0 0"
-                    rotation="270 180 0"></a-gltf-model>
+                    rotation="0 -90 -90"></a-gltf-model>
 
                 <!-- imágenes pequeñas que se mostrarán con los botones -->
                 <a-image id="smallA" src="#imgA" position="0.72 0.01 0.35" rotation="90 0 0" width="0.8" height="0.4"
                     visible="false"></a-image>
 
                 <a-image id="profile-button" class="clickable"
-                    src="https://raw.githubusercontent.com/ArtestDev/biolev/main/img/infoBT.png" visible="true"
+                    src="#info" visible="true"
                     position="0.30 0 0.45" rotation="90 0 0" height="0.15" width="0.15"
                     animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate">
                 </a-image>
